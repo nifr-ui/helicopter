@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">My reservations</h1>
+</div>
+
+<div class="card col-xl-6 col-lg-8 col-sm-12">
+  <h5 class="card-header">Create new reservation</h5>
+  <div class="card-body">
+    <form ng-submit="rc.createReservation()" name="rc.reservationFrom" id="reservationFrom">
+      <label for="select">Available helicopters</label>
+      <select class="form-control" id="select" ng-model="rc.reserveHelicopter" ng-options="heli.name for heli in rc.availableHelicopters | orderBy: 'name'" required></select>
+      <button type="submit" class="btn btn-primary mt-4 float-right">Create reservation</button>
+    </form>
+  </div>
+</div>
+
+
+<div class="card mt-5 col-xl-6 col-lg-8 col-sm-12" style="border: none;">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item text-white mb-1 bg-primary" ng-repeat="heli in rc.data | orderBy: 'name'">
+      <span class="float-right btn btn-link text-white" style="font-size: 20px;" data-toggle="modal"
+        data-target="#modalCancel" ng-click="rc.cancelId = heli._id">
+        <i class="fas fa-calendar-times" data-toggle="tooltip" data-placement="top" title="Cancel"></i>
+      </span>
+      <h4> {{ heli.name }} </h4>
+      <small class="ml-2">Serial number: <b>{{ heli.serial }}</b> </small>
+    </li>
+  </ul>
+</div>
+
+
+<!-- MODALS -->
+
+<div class="modal fade" id="modalCancel" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cancel</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to cancel this reservation?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="rc.cancelReservation()">Cancel
+          reservation</button>
+      </div>
+    </div>
+  </div>
+</div>

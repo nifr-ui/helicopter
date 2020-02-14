@@ -1,0 +1,91 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">List of helicopters</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" ng-click="dc.clearModal()">
+      Add new helicopter
+    </button>
+  </div>
+</div>
+
+<div class="input-group mb-3 col-xl-6 col-lg-8 col-sm-12">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">
+      <i class="fas fa-search"></i>
+    </span>
+  </div>
+  <input type="text" class="form-control" placeholder="Search..." name="searchHelicopter"
+    ng-model="dc.searchHelicopter">
+</div>
+
+<div class="card col-xl-6 col-lg-8 col-sm-12" style="border: none;">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item text-white mb-2"
+      ng-repeat="heli in dc.data | filter: { name: dc.searchHelicopter} | orderBy: ['-available', 'name']"
+      ng-class="[{'bg-success': heli.available}, {'bg-danger': !heli.available}]">
+      <span class="float-right btn btn-link text-white" style="font-size: 20px;" ng-click="dc.editHelicopter(heli)"
+        data-toggle="modal" data-target="#modal">
+        <i class="far fa-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+      </span>
+      <h4> {{ heli.name }} </h4>
+      <span class="float-right btn btn-link text-white" style="font-size: 20px;" data-toggle="modal"
+        data-target="#modalDelete" ng-click="dc.deleteId = heli._id">
+        <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+      </span>
+      <small class="ml-2">Serial number: <b>{{ heli.serial }}</b> </small>
+    </li>
+  </ul>
+</div>
+
+
+
+
+<!-- MODALS -->
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" ng-if="!dc.editId">Add new helicopter</h5>
+        <h5 class="modal-title" ng-if="dc.editId">Edit helicopter</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form name="dc.helicopterForm" id="helicopterForm" ng-submit="dc.saveHelicopter()">
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="text" class="form-control mb-2" placeholder="Name" ng-model="dc.name" required>
+            <input type="text" class="form-control" placeholder="Serial" ng-model="dc.serial" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" ng-if="!dc.editId">Create</button>
+          <button type="submit" class="btn btn-primary" ng-if="dc.editId">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this helicopter?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"
+          ng-click="dc.deleteHelicopter()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
